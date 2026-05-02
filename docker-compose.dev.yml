@@ -18,9 +18,10 @@ services:
       - app_network
 
   backend:
-    image: ghcr.io/${GHCR_NAMESPACE:-smazmi}/task-manager-backend:${IMAGE_TAG:-latest}
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: team-task-manager-backend
-    pull_policy: always
     restart: unless-stopped
     depends_on:
       postgres:
@@ -29,41 +30,19 @@ services:
       - ./.env.docker
     ports:
       - "8080:8080"
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
     networks:
       - app_network
 
   frontend:
-    image: ghcr.io/${GHCR_NAMESPACE:-smazmi}/task-manager-frontend:${IMAGE_TAG:-latest}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
     container_name: team-task-manager-frontend
-    pull_policy: always
     restart: unless-stopped
     depends_on:
       - backend
     ports:
       - "5173:80"
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
-    networks:
-      - app_network
-
-  watchtower:
-    image: containrrr/watchtower:1.7.1
-    environment:
-      DOCKER_API_VERSION: "${WATCHTOWER_DOCKER_API_VERSION:-1.40}"
-    command:
-      - "--label-enable"
-      - "--interval"
-      - "${WATCHTOWER_POLL_INTERVAL:-60}"
-      - "--cleanup"
-      - "--rolling-restart"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - backend
-      - frontend
-    restart: unless-stopped
     networks:
       - app_network
 
