@@ -1,17 +1,72 @@
 :root {
-  font-family:
-    Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* ── Brave Design Tokens ─────────────────────── */
+
+  /* Backgrounds — warm cream, not cold grey */
+  --bg:          #f5f3ef;
+  --bg-subtle:   #ede9e3;
+  --surface:     #ffffff;
+  --surface-alt: #faf9f7;
+
+  /* Borders + depth */
+  --border:        #e2ddd6;
+  --border-strong: #c8c2b8;
+
+  /* Text */
+  --text:   #1a1917;
+  --text-2: #706d67;
+  --text-3: #a09c95;
+
+  /* Accent — Brave indigo */
+  --accent:        #434fcf;
+  --accent-hover:  #3a2ecd;
+  --accent-muted:  #edeffe;
+  --accent-border: #c0c8f5;
+
+  /* Semantic */
+  --success:        #15803d;
+  --success-muted:  #dcfce7;
+  --success-border: #bbf7d0;
+  --warning:        #a16207;
+  --warning-muted:  #fef9c3;
+  --warning-border: #fef08a;
+  --danger:         #b91c1c;
+  --danger-muted:   #fee2e2;
+  --danger-border:  #fecaca;
+  --info:           #0369a1;
+  --info-muted:     #e0f2fe;
+  --info-border:    #bae6fd;
+
+  /* Radii */
+  --r-xs:  6px;
+  --r-sm:  10px;
+  --r-md:  14px;
+  --r-lg:  18px;
+  --r-full: 9999px;
+
+  /* Shadows — subtle, warm-toned */
+  --shadow-xs: 0 1px 2px rgba(26,25,23,0.06);
+  --shadow-sm: 0 1px 3px rgba(26,25,23,0.08), 0 1px 2px rgba(26,25,23,0.05);
+  --shadow-md: 0 4px 8px rgba(26,25,23,0.07), 0 2px 4px rgba(26,25,23,0.05);
+  --shadow-lg: 0 12px 32px rgba(26,25,23,0.12), 0 4px 8px rgba(26,25,23,0.06);
+
+  /* Transitions */
+  --t1: 140ms ease;
+  --t2: 220ms ease;
+
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #172033;
-  background: #eef2f6;
+  color: var(--text);
+  background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -23,10 +78,12 @@ body,
 
 body {
   margin: 0;
-  min-height: 100vh;
-  background:
-    linear-gradient(180deg, #f8fafc 0%, #eef2f6 35%, #e8edf4 100%);
-  color: #172033;
+  min-height: 100dvh;
+  color: var(--text);
+  /* Warm cream base with a subtle dot grid — gives the page texture and life */
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, rgba(26, 25, 23, 0.055) 1px, transparent 1px);
+  background-size: 22px 22px;
 }
 
 button,
@@ -43,4 +100,19 @@ button {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+select option {
+  background: var(--surface);
+  color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
