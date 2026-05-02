@@ -34,7 +34,7 @@ export function ProjectBoard() {
   const [taskDueDate, setTaskDueDate] = useState('')
   const [taskPriority, setTaskPriority] = useState<TaskPriority>('medium')
   const [taskAssigneeId, setTaskAssigneeId] = useState('')
-  const [memberUserId, setMemberUserId] = useState('')
+  const [memberEmail, setMemberEmail] = useState('')
   const [memberRole, setMemberRole] = useState<ProjectRole>('member')
   const [taskFormError, setTaskFormError] = useState('')
   const [memberFormError, setMemberFormError] = useState('')
@@ -155,9 +155,8 @@ export function ProjectBoard() {
     event.preventDefault()
     setMemberFormError('')
 
-    const parsedUserId = Number(memberUserId)
-    if (!Number.isInteger(parsedUserId) || parsedUserId < 1) {
-      setMemberFormError('A valid user ID is required.')
+    if (memberEmail.trim().length === 0) {
+      setMemberFormError('A valid email address is required.')
       return
     }
 
@@ -165,12 +164,12 @@ export function ProjectBoard() {
       await addMemberMutation.mutateAsync({
         projectId,
         payload: {
-          user_id: parsedUserId,
+          email: memberEmail.trim(),
           role: memberRole,
         },
       })
 
-      setMemberUserId('')
+      setMemberEmail('')
       setMemberRole('member')
     } catch {
       return
@@ -320,7 +319,6 @@ export function ProjectBoard() {
                       <p className="member-row-name">{member.user.name}</p>
                       <div className="member-row-meta">
                         <span>{member.user.email}</span>
-                        <span>User ID: {member.user_id}</span>
                       </div>
                     </div>
 
@@ -356,7 +354,7 @@ export function ProjectBoard() {
                 <div>
                   <h2 className="panel-title">Manage members</h2>
                   <p className="panel-subtitle">
-                    Add a registered user to this project by their numeric user ID.
+                    Add a registered user to this project by their email address.
                   </p>
                 </div>
               </div>
@@ -376,13 +374,12 @@ export function ProjectBoard() {
                   ) : null}
 
                   <label className="field">
-                    <span>User ID</span>
+                    <span>Email Address</span>
                     <input
-                      min="1"
-                      onChange={(event) => setMemberUserId(event.target.value)}
-                      placeholder="e.g. 12"
-                      type="number"
-                      value={memberUserId}
+                      onChange={(event) => setMemberEmail(event.target.value)}
+                      placeholder="user@example.com"
+                      type="email"
+                      value={memberEmail}
                     />
                   </label>
 

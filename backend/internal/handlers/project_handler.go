@@ -176,8 +176,8 @@ func (h *ProjectHandler) AddMember(c *gin.Context) {
 	}
 
 	project, err := h.projectService.AddMember(c.Request.Context(), userID, projectID, service.AddProjectMemberInput{
-		UserID: request.UserID,
-		Role:   models.ProjectRole(request.Role),
+		Email: request.Email,
+		Role:  models.ProjectRole(request.Role),
 	})
 	if err != nil {
 		response.Error(c, err)

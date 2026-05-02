@@ -22,8 +22,8 @@ type UpdateProjectInput struct {
 }
 
 type AddProjectMemberInput struct {
-	UserID uint
-	Role   models.ProjectRole
+	Email string
+	Role  models.ProjectRole
 }
 
 type ProjectService struct {
@@ -157,14 +157,15 @@ func (s *ProjectService) AddMember(ctx context.Context, actingUserID, projectID 
 		return nil, apperror.Internal("failed to fetch project")
 	}
 
-	if _, err := s.users.GetByID(ctx, input.UserID); err != nil {
+	user, err := s.users.GetByEmail(ctx, input.Email)
+	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, apperror.NotFound("user not found")
+			return nil, apperror.NotFound("user not found with that email")
 		}
 		return nil, apperror.Internal("failed to fetch user")
 	}
 
-	existingMember, err := s.projects.GetMembership(ctx, projectID, input.UserID)
+	existingMember, err := s.projects.GetMembership(ctx, projectID, user.ID)
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, apperror.Internal("failed to verify project membership")
 	}
@@ -181,7 +182,7 @@ func (s *ProjectService) AddMember(ctx context.Context, actingUserID, projectID 
 
 	member := &models.ProjectMember{
 		ProjectID: projectID,
-		UserID:    input.UserID,
+		UserID:    user.ID,
 		Role:      input.Role,
 	}
 
