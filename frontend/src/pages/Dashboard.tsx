@@ -128,6 +128,9 @@ export function Dashboard() {
 
       {projects.length === 0 ? (
         <section className="empty-state">
+          <div className="empty-state-icon">
+            <KanbanSquare size={28} />
+          </div>
           <h2 className="state-title">No projects yet</h2>
           <p className="state-copy">
             Start by creating your first project so tasks, assignments, and dashboards
