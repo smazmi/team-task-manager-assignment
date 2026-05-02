@@ -17,8 +17,8 @@ type UpdateProjectRequest struct {
 }
 
 type AddProjectMemberRequest struct {
-	UserID uint   `json:"user_id" binding:"required,gt=0"`
-	Role   string `json:"role" binding:"required,oneof=admin member"`
+	Email string `json:"email" binding:"required,email"`
+	Role  string `json:"role" binding:"required,oneof=admin member"`
 }
 
 type ProjectMemberResponse struct {

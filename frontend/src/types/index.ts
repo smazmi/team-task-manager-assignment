@@ -95,7 +95,7 @@ export interface CreateProjectInput {
 }
 
 export interface AddProjectMemberInput {
-  user_id: number
+  email: string
   role: ProjectRole
 }
 
